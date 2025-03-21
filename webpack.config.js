@@ -13,6 +13,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].min.js',
+    library: 'Sienna',
+    libraryTarget: 'var',
+    libraryExport: 'default'
   },
   resolve: {
     extensions: ['.ts', '.js', '.json'],

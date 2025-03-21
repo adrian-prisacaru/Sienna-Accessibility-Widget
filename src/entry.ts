@@ -41,3 +41,6 @@ function checkReadyState() {
 // Use readystatechange for async support
 document.addEventListener("readystatechange", checkReadyState);
 
+// Export the sienna function for external usage
+export default sienna;
+
