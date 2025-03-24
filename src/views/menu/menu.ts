@@ -43,11 +43,11 @@ export function renderMenu({
 
     $container.querySelectorAll('.asw-menu-close, .asw-overlay').forEach((el: HTMLElement) => {
         el.addEventListener('click', () => {
-            toggle($container, false)
+            toggle($container, false);
         });
     })
 
-    $menu.querySelectorAll(".asw-adjust-font div[role='button']").forEach((el: HTMLElement) => {
+    $menu.querySelectorAll(".asw-adjust-font button").forEach((el: HTMLElement) => {
         el.addEventListener("click", () => {
             const margin = 0.1;
 
@@ -103,7 +103,6 @@ export function renderMenu({
     $menu.querySelector('.asw-menu-reset')?.addEventListener('click', () => {
         reset();
     });
-
     
     let settings = getSettings();
 

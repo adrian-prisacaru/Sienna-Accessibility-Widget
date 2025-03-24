@@ -5,6 +5,9 @@ import { renderMenu } from "../menu/menu";
 import { ISeinnaSettings } from "../../sienna";
 import translateMenu from "../menu/translateMenu";
 
+// Global reference to the escape key handler
+let escKeyHandler: ((e: KeyboardEvent) => void) | null = null;
+
 export function renderWidget(options: ISeinnaSettings) {
     let {
         position = "bottom-left",
@@ -81,19 +84,52 @@ export function renderWidget(options: ISeinnaSettings) {
 
         if(menu) {
             toggle(menu);
+            
+            // Toggle escape key handler
+            if (menu.style.display !== "none") {
+                // Menu is visible, add escape handler
+                if (escKeyHandler) {
+                    document.removeEventListener("keydown", escKeyHandler);
+                }
+                
+                escKeyHandler = (e: KeyboardEvent) => {
+                    if (e.key === "Escape") {
+                        toggle(menu, false);
+                    }
+                };
+                
+                document.addEventListener("keydown", escKeyHandler);
+            } else {
+                // Menu is hidden, remove escape handler
+                if (escKeyHandler) {
+                    document.removeEventListener("keydown", escKeyHandler);
+                    escKeyHandler = null;
+                }
+            }
         } else {
             menu = renderMenu({
                 ...options,
                 container: widget,
             });
+            
+            // Set up escape key handler for new menu
+            if (escKeyHandler) {
+                document.removeEventListener("keydown", escKeyHandler);
+            }
+            
+            escKeyHandler = (e: KeyboardEvent) => {
+                if (e.key === "Escape") {
+                    toggle(menu, false);
+                }
+            };
+            
+            document.addEventListener("keydown", escKeyHandler);
         }
     });
-
     
     translateMenu(widget);
     
     document.body.appendChild(widget);
-
 
     return widget;
 }
